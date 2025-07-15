@@ -316,7 +316,7 @@ const ProductDetail = () => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/products/${id}`)
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
@@ -333,7 +333,7 @@ const ProductDetail = () => {
 
     try {
       await axios.post(
-        'http://localhost:5000/api/cart/add',
+        `${import.meta.env.VITE_BACKEND_URL}/api/cart/add`,
         { productId: product._id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -350,7 +350,7 @@ const ProductDetail = () => {
       return;
     }
 
-    fetch(`http://localhost:5000/api/products/${id}/reviews`, {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/products/${id}/reviews`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

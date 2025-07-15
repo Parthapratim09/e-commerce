@@ -17,7 +17,7 @@
 import express from 'express';
 import Product from '../models/Product.js';
 import { protect } from '../middleware/authMiddleware.js';
-import Review from '../models/review.js';
+import Review from '../models/Review.js';
 
 
 

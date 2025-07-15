@@ -9,21 +9,21 @@ const CartPage = () => {
 
   const fetchCart = async () => {
     const token = localStorage.getItem("token");
-    const res = await axios.get('http://localhost:5000/api/cart', {
+    const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/cart`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setCart(res.data.items);
   };
 
   const updateQuantity = async (productId, quantity) => {
-    await axios.put('http://localhost:5000/api/cart/update', { productId, quantity }, {
+    await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/cart/update`, { productId, quantity }, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     fetchCart();
   };
 
   const removeFromCart = async (productId) => {
-    await axios.delete(`http://localhost:5000/api/cart/remove/${productId}`, {
+    await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/cart/remove/${productId}`, {
       headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
     });
     fetchCart();
