@@ -1,7 +1,7 @@
 🛒 Ecommerce Web App
 Live Demo: https://ecommerce-i3f8.onrender.com/
 
-The Ecommerce Web App is a fully functional and responsive online shopping platform built using the MERN stack (MongoDB, Express.js, React, Node.js). It allows users to browse products, view ratings and reviews, add items to the cart, and manage purchases with authentication-based access.
+The Ecommerce Web App is a fully functional and responsive online shopping platform built using the MERN stack (MongoDB, Express.js, React, Node.js). It allows users to browse products, view ratings and reviews, add items to the cart with authentication-based access.
 
 🔧 Tech Stack
 Frontend: React.js
