@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';  // Note the .js extension
 import productRoutes from './routes/products.js';
 import cartRoutes from './routes/cart.js';
+import paymentRoutes from "./routes/payment.js";
+import orderRoutes from "./routes/Order.js";
 
 
 
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes); // <== THIS IS REQUIRED
+app.use("/api/payment", paymentRoutes);
+app.use("/api/orders", orderRoutes);
 
 // Connect to MongoDB
 
