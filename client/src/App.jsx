@@ -6,11 +6,13 @@ import Register from './pages/Register';
 import Cart from './pages/Cart';
 import ProductDetail from './pages/ProductDetail';
 import CheckoutDetails from "./pages/CheckoutDetails";
+import { CartProvider } from './context/CartContext';
 
 
 const App = () => {
   return (
     <>
+    <CartProvider>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -20,6 +22,7 @@ const App = () => {
         <Route path="/products/:id" element={<ProductDetail />} />
         <Route path="/checkout" element={<CheckoutDetails />} />
       </Routes>
+      </CartProvider>
     </>
   );
 };

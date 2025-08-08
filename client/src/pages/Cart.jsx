@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react';
 import { Button, Typography, Container, IconButton, Card, CardMedia, CardContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';    
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { CartContext } from '../context/CartContext.jsx';
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
   const navigate = useNavigate();
+  const { setCount } = useContext(CartContext);
 
-  // ✅ When clicking Buy Now
+
   const goToCheckout = () => {
     navigate("/checkout");
   };
 
-  // ✅ Fetch cart data (still using Axios for cart because your API uses token-based headers)
   const fetchCart = async () => {
     const token = localStorage.getItem("token");
     const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cart`, {
@@ -20,6 +22,10 @@ const CartPage = () => {
     });
     const data = await res.json();
     setCart(data.items);
+    console.log("Cart items:", data.items);
+    const totalItems = data.items.length;
+    setCount(totalItems);
+    console.log("Total items in cart:", totalItems);
   };
 
   const updateQuantity = async (productId, quantity) => {
@@ -70,8 +76,6 @@ const CartPage = () => {
               </CardContent>
             </Card>
           ))}
-
-          {/* ✅ Buy Now Button */}
           <Button 
             variant="contained" 
             color="primary" 

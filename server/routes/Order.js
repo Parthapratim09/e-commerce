@@ -2,8 +2,6 @@ import express from "express";
 import Order from "../models/Order.js";
 
 const router = express.Router();
-
-// ✅ Save order after successful payment
 router.post("/create", async (req, res) => {
   try {
     const { userId, items, totalAmount, customerDetails, paymentId } = req.body;
@@ -18,7 +16,7 @@ router.post("/create", async (req, res) => {
     });
 
     await newOrder.save();
-    res.json({ message: "✅ Order saved successfully!" });
+    res.json({ message: "Order saved successfully!" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });

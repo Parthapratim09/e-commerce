@@ -9,13 +9,11 @@ const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
 });
-
-// ✅ Create Razorpay order
 router.post("/create-order", async (req, res) => {
   try {
-    const { amount } = req.body; // amount in INR (₹)
+    const { amount } = req.body;
     const options = {
-      amount: amount * 100, // convert to paise
+      amount: amount * 100,
       currency: "INR",
       receipt: `receipt_${Date.now()}`,
     };

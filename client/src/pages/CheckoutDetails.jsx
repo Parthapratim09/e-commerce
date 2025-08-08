@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { TextField, Button, Container, Typography } from "@mui/material";
-
+import { TextField, Button, Container, Typography,Snackbar,Alert } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 export default function CheckoutDetails() {
+const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -13,7 +15,7 @@ export default function CheckoutDetails() {
   const totalAmount = cart.reduce((sum, item) => sum + (item.product?.price || 0) * item.quantity, 0);
 
   useEffect(() => {
-    fetchCart();
+    fetchCart();    
   }, []);
 
   const fetchCart = async () => {
@@ -31,15 +33,12 @@ export default function CheckoutDetails() {
 
   const handlePayment = async () => {
     try {
-      // ✅ Step 1: Create Razorpay order
       const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/payment/create-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount: totalAmount })
+        body: JSON.stringify({ amount: Math.round(totalAmount) })
       });
       const data = await res.json();
-
-      // ✅ Step 2: Open Razorpay checkout
       const options = {
         key: import.meta.env.VITE_RAZORPAY_KEY,
         amount: data.amount,
@@ -48,7 +47,6 @@ export default function CheckoutDetails() {
         description: "Order Payment",
         order_id: data.id,
         handler: async function (response) {
-          // ✅ Payment successful → save order to DB
           await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/orders/create`, {
             method: "POST",
             headers: { 
@@ -56,7 +54,7 @@ export default function CheckoutDetails() {
               Authorization: `Bearer ${localStorage.getItem("token")}` 
             },
             body: JSON.stringify({
-              userId: "USER_ID_FROM_CONTEXT", // Replace later with actual logged in user
+              userId: localStorage.getItem("userId"),
               items: cart.map(item => ({
                 product: item.product._id,
                 quantity: item.quantity
@@ -67,13 +65,18 @@ export default function CheckoutDetails() {
             })
           });
 
-          alert("✅ Payment Successful! Order Saved.");
-          window.location.href = "/success";
+          setSnackbar({ open: true, message: 'Payment Successful', severity: 'success' });
+          setCart([]);
+          setTimeout(() => {
+              navigate("/home");
+            }, 2000);
         },
         modal: {
           ondismiss: function () {
-            // ❌ If user closes payment → go back to cart
-            window.location.href = "/cart";
+            setSnackbar({ open: true, message: 'Payment Failed', severity: 'error' });
+            setTimeout(() => {
+              navigate("/cart");
+            }, 2000);
           }
         },
         prefill: {
@@ -92,6 +95,7 @@ export default function CheckoutDetails() {
   };
 
   return (
+    <>
     <Container sx={{ mt: 4 }}>
       <Typography variant="h4">Checkout Details</Typography>
 
@@ -111,5 +115,17 @@ export default function CheckoutDetails() {
         Pay Now
       </Button>
     </Container>
+    <Snackbar
+            open={snackbar.open}
+            autoHideDuration={4000}
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            anchorOrigin={{ vertical: 'top', horizontal: 'center' }} 
+          >
+            
+            <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+              {snackbar.message}
+            </Alert>
+          </Snackbar>
+    </>
   );
 }

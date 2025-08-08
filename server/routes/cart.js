@@ -5,13 +5,11 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// GET user's cart
 router.get('/', protect, async (req, res) => {
   const cart = await Cart.findOne({ user: req.user.id }).populate('items.product');
   res.json(cart || { items: [] });
 });
 
-// ADD/UPDATE item in cart
 router.post('/add', protect, async (req, res) => {
   const { productId, quantity = 1 } = req.body;
   let cart = await Cart.findOne({ user: req.user.id });
@@ -32,7 +30,6 @@ router.post('/add', protect, async (req, res) => {
   res.json(populated);
 });
 
-// REMOVE item from cart
 router.delete('/remove/:productId', protect, async (req, res) => {
   const cart = await Cart.findOne({ user: req.user.id });
   if (!cart) return res.status(404).json({ message: "Cart not found" });
@@ -42,7 +39,6 @@ router.delete('/remove/:productId', protect, async (req, res) => {
   res.json(cart);
 });
 
-// UPDATE quantity
 router.put('/update', protect, async (req, res) => {
   const { productId, quantity } = req.body;
 
