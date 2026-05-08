@@ -61,6 +61,9 @@ const AdminDashboard = () => {
         <Button variant="contained" color="secondary" onClick={() => navigate("/admin/orders")}>
           View All Orders
         </Button>
+        <Button variant="contained" onClick={() => navigate("/admin/payments")}>
+          Payment Management
+        </Button>
       </Box>
 
       

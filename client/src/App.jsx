@@ -16,6 +16,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
 import MyAddress from "./pages/MyAddress";
+import AdminPayments from "./pages/admin/AdminPayments";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/admin/products/create" element={ <AdminRoute> <ProductCreate /></AdminRoute>}/>
         <Route path="/admin/products/edit/:id" element={ <AdminRoute> <ProductEdit /> </AdminRoute>}/>
         <Route path="/admin/orders" element={ <AdminRoute> <AdminOrders /> </AdminRoute>} />
+        <Route path="/admin/payments"element={<AdminRoute><AdminPayments /></AdminRoute>}/>
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="//my-orders/:id" element={<OrderDetails />} />
         <Route path="/my-address" element={<MyAddress />} />

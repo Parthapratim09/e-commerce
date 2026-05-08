@@ -194,4 +194,59 @@ router.get(
   }
 );
 
+router.get(
+"/admin/payments",
+protect,
+admin,
+async (req, res) => {
+
+try {
+
+const orders = await Order. find()
+.populate("user", "name email")
+.sort({ createdAt: -1 });
+
+res.json(orders);
+
+} catch (err) {
+
+console.error(err);
+
+res.status(500). json({
+message: "Failed to fetch payments"
+});
+}
+}
+);
 export default router;
+
+
+router.put(
+"/admin/:id/payment",
+protect,
+admin,
+async (req, res) => {
+try {
+const order = await Order.findById(
+req.params.id
+);
+if (!order) {
+return res.status(404).json({
+message: "Order not found"
+});
+}
+order.paymentStatus = "Paid";
+order.isPaid = true;
+order.paidAt = Date.now();
+await order.save();
+res.json({
+message: "Payment updated"
+});
+} catch (err) {
+console.error(err);
+res.status(500).json({
+message: "Failed to update payment"
+});
+}
+}
+);
