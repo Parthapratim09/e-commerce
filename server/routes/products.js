@@ -1,7 +1,8 @@
 import express from 'express';
 import Product from '../models/Product.js';
-import { protect } from '../middleware/authMiddleware.js';
+import { protect,admin } from '../middleware/authMiddleware.js';
 import Review from '../models/Review.js';
+import { createProduct,updateProduct,deleteProduct } from '../controllers/productController.js';
 
 
 
@@ -72,6 +73,15 @@ router.post('/:id/reviews', protect, async (req, res) => {
     res.status(500).json({ error: 'Failed to post review' });
   }
 });
+
+
+
+router.post("/", protect, admin, createProduct);
+
+
+router.put("/:id", protect, admin, updateProduct);
+
+router.delete("/:id", protect, admin, deleteProduct);
 
 
 export default router;

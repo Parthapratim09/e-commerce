@@ -1,55 +1,292 @@
-import React, { useContext } from 'react';
-import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
-import Badge from '@mui/material/Badge';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { CartContext } from '../context/CartContext';
+import React, { useContext, useState } from "react";
+
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Badge,
+  IconButton,
+  Drawer,
+  Box,
+  Avatar,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText
+} from "@mui/material";
+
+import {
+  Link,
+  useNavigate
+} from "react-router-dom";
+
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
+import { AuthContext } from "../context/AuthContext";
+
+import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
+
   const { user, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+
   const { count } = useContext(CartContext);
 
+  const navigate = useNavigate();
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
   const handleLogout = () => {
+
     logout();
-    navigate('/login');
+
+    navigate("/login");
+
   };
 
   return (
-    <AppBar position="static">
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <Typography
-          variant="h6"
-          component={Link}
-          to="/"
-          sx={{ textDecoration: 'none', color: 'white' }}
-        >
-          🛍️ MyShop
-        </Typography>
 
-        <div>
-          {!user ? (
-            <>
-              <Button color="inherit" component={Link} to="/login">Login</Button>
-              <Button color="inherit" component={Link} to="/register">Register</Button>
-            </>
-          ) : (
-            <>
-              <Button color="inherit" component={Link} to="/cart">
-                <Badge badgeContent={count} color="secondary" anchorOrigin={{vertical: 'top', horizontal: 'left'}}>
-                  <ShoppingCartIcon /> Cart
-                </Badge>
-              </Button>
-              <Button color="inherit" onClick={handleLogout}>Logout</Button>
-            </>
-          )}
-        </div>
-      </Toolbar>
-    </AppBar>
+    <>
+
+      <AppBar position="static">
+
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between"
+          }}
+        >
+
+        
+
+          <Typography
+            variant="h6"
+            component={Link}
+            to="/"
+            sx={{
+              textDecoration: "none",
+              color: "white",
+              fontWeight: "bold"
+            }}
+          >
+            🛍️ MyShop
+          </Typography>
+
+        
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1
+            }}
+          >
+
+            {!user ? (
+
+              <>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/login"
+                >
+                  Login
+                </Button>
+
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/register"
+                >
+                  Register
+                </Button>
+              </>
+
+            ) : (
+
+              <>
+
+              
+
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/cart"
+                >
+
+                  <Badge
+                    badgeContent={count}
+                    color="secondary"
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left"
+                    }}
+                  >
+
+                    <ShoppingCartIcon />
+
+                  </Badge>
+
+                  <Box sx={{ ml: 1 }}>
+                    Cart
+                  </Box>
+
+                </Button>
+
+                
+
+                <IconButton
+                  color="inherit"
+                  onClick={() =>
+                    setDrawerOpen(true)
+                  }
+                >
+
+                  <AccountCircleIcon
+                    fontSize="large"
+                  />
+
+                </IconButton>
+
+              </>
+
+            )}
+
+          </Box>
+
+        </Toolbar>
+
+      </AppBar>
+
+      
+
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() =>
+          setDrawerOpen(false)
+        }
+      >
+
+        <Box sx={{ width: 280 }}>
+
+  
+
+          <Box
+            sx={{
+              p: 3,
+              display: "flex",
+              alignItems: "center",
+              gap: 2
+            }}
+          >
+
+            <Avatar
+              sx={{
+                width: 56,
+                height: 56
+              }}
+            >
+              {user?.name?.charAt(0)}
+            </Avatar>
+
+            <Box>
+
+              <Typography fontWeight="bold">
+                {user?.name}
+              </Typography>
+
+              <Typography
+                variant="body2"
+                color="text.secondary"
+              >
+                {user?.email}
+              </Typography>
+
+            </Box>
+
+          </Box>
+
+          <Divider />
+
+          
+
+          <List>
+
+
+
+            <ListItem disablePadding>
+
+              <ListItemButton
+                onClick={() => {
+
+                  navigate("/my-orders");
+
+                  setDrawerOpen(false);
+
+                }}
+              >
+
+                <ListItemText
+                  primary="My Orders"
+                />
+
+              </ListItemButton>
+
+            </ListItem>
+
+
+
+            <ListItem disablePadding>
+
+              <ListItemButton
+                onClick={() => {
+
+                  navigate("/my-address");
+
+                  setDrawerOpen(false);
+
+                }}
+              >
+
+                <ListItemText
+                  primary="My Address"
+                />
+
+              </ListItemButton>
+
+            </ListItem>
+
+          
+
+            <ListItem disablePadding>
+
+              <ListItemButton
+                onClick={handleLogout}
+              >
+
+                <ListItemText
+                  primary="Logout"
+                />
+
+              </ListItemButton>
+
+            </ListItem>
+
+          </List>
+
+        </Box>
+
+      </Drawer>
+
+    </>
+
   );
+
 };
 
 export default Navbar;

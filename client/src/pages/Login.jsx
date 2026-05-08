@@ -2,19 +2,22 @@ import { TextField, Button, Container, Typography } from '@mui/material';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import axios from 'axios';
+import axios from '../config/axios';
 
 const Login = () => {
   const [form, setForm] = useState({ email: '', password: '' });
-  const { setUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, form);
-      localStorage.setItem('token', res.data.token);
-      setUser(res.data.user);
+      const res = await axios.post(`/api/auth/login`, form);
+       login({
+        token: res.data.token,
+        user: res.data.user
+      });
       navigate('/');
     } catch (err) {
       alert(err.response?.data?.msg || 'Login failed');

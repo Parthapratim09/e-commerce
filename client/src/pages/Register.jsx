@@ -8,7 +8,6 @@ const Register = () => {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const { setUser } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

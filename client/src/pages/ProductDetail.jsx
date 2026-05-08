@@ -16,7 +16,7 @@ import {
 import axios from 'axios';
 import { CartContext } from '../context/CartContext';
 import { useContext } from 'react';
-
+import ProductImageSlider from "../components/ProductImageSlider";
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -95,12 +95,19 @@ const ProductDetail = () => {
   return (
     <>
       <Card sx={{ maxWidth: 600, margin: 'auto', mt: 4 }}>
-        <CardMedia component="img" image={product.image} height="300" />
+        <ProductImageSlider
+  images={
+    (product.images || []).filter(
+      img => img && img.trim() !== ""
+    )
+  }
+/>
         <CardContent>
           <Typography variant="h5">{product.name}</Typography>
           <Typography>₹{product.price}</Typography>
-          <Button variant="contained" onClick={handleAddToCart} sx={{ mt: 2 }}>
+          <Button variant="contained" onClick={handleAddToCart} sx={{ mt: 2 }} disabled={product.countInStock <= 0}>
             Add to Cart
+            {product.countInStock <= 0 && <Typography variant="caption" color="error"> - Out of Stock</Typography>}
           </Button>
 
           <Typography variant="h6" sx={{ mt: 3 }}>
@@ -111,7 +118,7 @@ const ProductDetail = () => {
           {reviews.map((r, i) => (
             <Box key={i} sx={{ my: 2, borderBottom: '1px solid #ccc', pb: 1 }}>
               <Typography variant="body2">
-                🧑 {r.author?.name || 'User'}
+                {r.author?.name || 'User'}
               </Typography>
               <Rating value={r.rating} readOnly size="small" />
               <Typography variant="body2">{r.comment}</Typography>

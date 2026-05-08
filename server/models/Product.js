@@ -10,13 +10,19 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   description: String,
-  image: String,
+  images: [{type: String}],
   category: String,
   inStock: {
     type: Boolean,
     required: true,
     default: true
   },
+
+  countInStock: {
+  type: Number,
+  required: true,
+  default: 0
+},
   reviews: [
     {
       type: mongoose.Schema.Types.ObjectId,

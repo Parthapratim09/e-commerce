@@ -63,7 +63,7 @@ const CartPage = () => {
               <CardMedia
                 component="img"
                 sx={{ width: 150 }}
-                image={product.image || 'https://via.placeholder.com/150'}
+                image={product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/150'}
                 alt={product.name}
               />
               <CardContent sx={{ flex: 1 }}>

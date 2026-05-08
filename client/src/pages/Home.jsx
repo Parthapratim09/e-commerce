@@ -18,9 +18,9 @@ export default function Home() {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
-    setCart(data.items);
+    // setCart(data.items);
     console.log("Cart items:", data.items);
-    const totalItems = data.items.length;
+    const totalItems = data.items.length || 0;
     setCount(totalItems);
     console.log("Total items in cart:", totalItems);
   };
@@ -86,7 +86,7 @@ export default function Home() {
                   <CardMedia
                     component="img"
                     height="140"
-                    image={product.image || 'https://via.placeholder.com/140'}
+                    image={product.images?.[0] || 'https://via.placeholder.com/140'}
                     alt={product.name}
                   />
                 </Link>
@@ -99,8 +99,11 @@ export default function Home() {
                     variant="contained"
                     onClick={() => handleAddToCart(product._id)}
                     sx={{ mt: 1 }}
+                    disabled={product.countInStock <= 0}
                   >
-                    Add to Cart
+                    {product.countInStock <= 0
+                    ? "Out of Stock"
+                    : "Add to Cart"}
                   </Button>
                 </CardContent>
               </Card>
