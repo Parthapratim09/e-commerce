@@ -217,7 +217,26 @@ const Navbar = () => {
 
           <List>
 
+{user?.isAdmin === true && (
+<ListItem disablePadding>
+              <ListItemButton
+                onClick={() => {
 
+                  navigate("/admin");
+
+                  setDrawerOpen(false);
+
+                }}
+              >
+
+                <ListItemText
+                  primary="Admin Panel"
+                />
+
+              </ListItemButton>
+
+            </ListItem>
+)}
 
             <ListItem disablePadding>
 
